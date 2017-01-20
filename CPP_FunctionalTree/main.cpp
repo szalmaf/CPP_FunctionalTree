@@ -12,9 +12,21 @@
 template <class T>
 class Tree
 {
+    struct Node
+    {
+        Node(std::shared_ptr<Node> lft,
+             T val,
+             std::shared_ptr<Node> rgt)
+        : _lft(lft), _val(val), _rgt(rgt)
+        {}
+        
+        std::shared_ptr<Node> _lft;
+        T _val;
+        std::shared_ptr<Node> _rgt;
+    };
 public:
     Tree(){}
-    Tree(Tree const & l, T val, Tree const & r){}
+    Tree(Tree const & lft, T val, Tree const & rgt){}
 };
 
 
