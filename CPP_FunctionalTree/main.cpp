@@ -9,8 +9,19 @@
 
 #include <iostream>
 
+template <class T>
+class Tree
+{
+public:
+    Tree(){}
+    Tree(Tree const & l, T val, Tree const & r){}
+};
+
+
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    
+    Tree<double> t;
+
+    
     return 0;
 }
