@@ -56,6 +56,18 @@ public:
         else
             return *this;
     }
+    bool member(T x) const
+    {
+        if (isEmpty())
+            return false;
+        T y = root();
+        if (x < y)
+            return left().member(x);
+        else if (y < x)
+            return right().member(x);
+        else
+            return true;
+    }
 private:
     std::shared_ptr<const Node> _root;
 };
