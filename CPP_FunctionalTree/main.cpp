@@ -24,6 +24,7 @@ class Tree
         T _val;
         std::shared_ptr<const Node> _rgt;
     };
+    explicit Tree(std::shared_ptr<const Node> const & node) : _root(node){}
 public:
     Tree(){}
     Tree(Tree const & lft, T val, Tree const & rgt)
@@ -41,7 +42,7 @@ public:
     bool isEmpty() const { return !_root; }
     T root() const
     {
-        return _root->val;
+        return _root->_val;
     }
     Tree left() const
     {
@@ -85,6 +86,8 @@ int main(int argc, const char * argv[]) {
     Tree<double> t;
     Tree<double> t2(Tree<double>(Tree<double>(), 1.0, Tree<double>()), 2.0, Tree<double>(Tree<double>(), 3.0, Tree<double>()));
 
+    // Initializer_list constructor
+    Tree<double> t3{10,20,30,40,100,90,80,70};
     
     return 0;
 }
