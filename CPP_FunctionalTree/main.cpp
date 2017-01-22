@@ -44,6 +44,18 @@ public:
     {
         return Tree(_root->_rgt);
     }
+    Tree insert(T x) const
+    {
+        if(isEmpty())
+            return Tree(Tree(), x, Tree());
+        T y = root();
+        if (x < y)
+            return Tree(left().insert(x), y, right());
+        else if (y < x)
+            return Tree(left(), y, right().insert(x));
+        else
+            return *this;
+    }
 private:
     std::shared_ptr<const Node> _root;
 };
