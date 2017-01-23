@@ -6,6 +6,7 @@
 //  Copyright © 2017 Ferenc Szalma. All rights reserved.
 //
 // https://bartoszmilewski.com/2013/11/25/functional-data-structures-in-c-trees/
+// Binary search code without rebalancing
 
 #include <iostream>
 
