@@ -29,7 +29,11 @@ class Tree
 public:
     Tree(){}
     Tree(Tree const & lft, T val, Tree const & rgt)
-    : _root(std::make_shared<const Node>(lft._root, val, rgt._root)){}
+        : _root(std::make_shared<const Node>(lft._root, val, rgt._root))
+    {
+        assert(lft.isEmpty() || lft.root() < val);
+        assert(rgt.isEmpty() || rgt.root() > val);
+    }
     Tree(std::initializer_list<T> init)
     {
         Tree t;
@@ -43,14 +47,17 @@ public:
     bool isEmpty() const { return !_root; }
     T root() const
     {
+        assert(!isEmpty());
         return _root->_val;
     }
     Tree left() const
     {
+        assert(!isEmpty());
         return Tree(_root->_lft);
     }
     Tree right() const
     {
+        assert(!isEmpty());
         return Tree(_root->_rgt);
     }
     Tree insert(T x) const
