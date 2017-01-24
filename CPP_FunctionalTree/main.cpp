@@ -98,6 +98,50 @@ public:
         else
             return true;
     }
+    static Tree balance (Color c, Tree const & lft, T x, Tree const & rgt)
+    {
+        if (c == B && lft.doubledLeft())
+            return Tree(R
+                      , lft.left().paint(B)
+                      , lft.root()
+                      , Tree(B, lft.right(), x, rgt));
+        else if (c == B && lft.doubledRight())
+            return Tree(R
+                      , Tree(B, lft.left(), lft.root(), lft.right().left())
+                      , lft.right().root()
+                      , Tree(B, lft.right().right(), x, rgt));
+        else if (c == B && rgt.doubledLeft())
+            return Tree(R
+                      , Tree(B, lft, x, rgt.left().left())
+                      , rgt.left().root()
+                      , Tree(B, rgt.left().right(), rgt.root(), rgt.right()));
+        else if (c == B && rgt.doubledRight())
+            return Tree(R
+                      , Tree(B, lft, x, rgt.left())
+                      , rgt.root()
+                        , rgt.right().paint(B));
+        else
+            return Tree(c, lft, x, rgt);
+    }
+    bool doubledLeft() const
+    {
+        return !isEmpty()
+            && rootColor() == rootColor()
+            && !left().isEmpty()
+            && left().rootColor() == R;
+    }
+    bool doubledRight() const
+    {
+        return !isEmpty()
+            && rootColor() == rootColor()
+            && !right().isEmpty()
+        && right().rootColor() == R;
+    }
+    Tree paint(Color c) const
+    {
+        assert(!isEmpty());
+        return Tree(c, left(), root(), right());
+    }
 private:
     std::shared_ptr<const Node> _root;
 };
