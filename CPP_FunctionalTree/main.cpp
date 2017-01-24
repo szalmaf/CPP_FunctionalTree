@@ -9,18 +9,21 @@
 // Binary search code without rebalancing
 
 #include <iostream>
+#include <cassert>
 
 template <class T>
 class Tree
 {
+    enum Color { R, B };
     struct Node
     {
-        Node(std::shared_ptr<const Node> lft,
+        Node(Color c, std::shared_ptr<const Node> lft,
              T val,
              std::shared_ptr<const Node> rgt)
-        : _lft(lft), _val(val), _rgt(rgt)
+        : _c(c), _lft(lft), _val(val), _rgt(rgt)
         {}
         
+        Color _c;
         std::shared_ptr<const Node> _lft;
         T _val;
         std::shared_ptr<const Node> _rgt;
@@ -28,8 +31,8 @@ class Tree
     explicit Tree(std::shared_ptr<const Node> const & node) : _root(node){}
 public:
     Tree(){}
-    Tree(Tree const & lft, T val, Tree const & rgt)
-        : _root(std::make_shared<const Node>(lft._root, val, rgt._root))
+    Tree(Color c, Tree const & lft, T val, Tree const & rgt)
+        : _root(std::make_shared<const Node>(c, lft._root, val, rgt._root))
     {
         assert(lft.isEmpty() || lft.root() < val);
         assert(rgt.isEmpty() || rgt.root() > val);
@@ -50,6 +53,11 @@ public:
         assert(!isEmpty());
         return _root->_val;
     }
+    Color rootColor() const
+    {
+        assert(!isEmpty());
+        return _root->_c;
+    }
     Tree left() const
     {
         assert(!isEmpty());
@@ -60,15 +68,21 @@ public:
         assert(!isEmpty());
         return Tree(_root->_rgt);
     }
-    Tree insert(T x) const
+    Tree insert (T x) const
+    {
+        Tree t = ins(x);
+        return Tree (B, t.left(), t.root(), t.right());
+    }
+    Tree ins(T x) const
     {
         if(isEmpty())
-            return Tree(Tree(), x, Tree());
+            return Tree(R, Tree(), x, Tree());
         T y = root();
+        Color c = rootColor();
         if (x < y)
-            return Tree(left().insert(x), y, right());
+            return balance(c, left().ins(x), y, right()); //Tree(left().insert(x), y, right());
         else if (y < x)
-            return Tree(left(), y, right().insert(x));
+            return balance(c, left(), y, right().ins(x));
         else
             return *this; // no duplicates
     }
@@ -92,7 +106,7 @@ private:
 int main(int argc, const char * argv[]) {
     
     Tree<double> t;
-    Tree<double> t2(Tree<double>(Tree<double>(), 1.0, Tree<double>()), 2.0, Tree<double>(Tree<double>(), 3.0, Tree<double>()));
+//    Tree<double> t2(Tree<double>(Tree<double>(), 1.0, Tree<double>()), 2.0, Tree<double>(Tree<double>(), 3.0, Tree<double>()));
 
     // Initializer_list constructor
     Tree<double> t3{10,20,30,40,100,90,80,70};
