@@ -70,7 +70,7 @@ public:
         else if (y < x)
             return Tree(left(), y, right().insert(x));
         else
-            return *this;
+            return *this; // no duplicates
     }
     bool member(T x) const
     {
